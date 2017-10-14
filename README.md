@@ -1,2 +1,2 @@
 # Homework 1 RAUPJC
-This is a readme file
+Napomenta: zadatke sam testirao sa vašom Test klasom, koja sam ostavio unutar projekata
