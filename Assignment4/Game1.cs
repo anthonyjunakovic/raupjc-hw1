@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using System.Collections.Generic;
 
 namespace Assignment4
 {
@@ -65,11 +64,11 @@ namespace Assignment4
         /// <summary>
         /// List of all walls
         /// </summary>
-        public List<Wall> Walls { get; set; }
+        public GenericList<Wall> Walls { get; set; }
         /// <summary>
         /// List of all goals
         /// </summary>
-        public List<Wall> Goals { get; set; }
+        public GenericList<Wall> Goals { get; set; }
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -122,17 +121,14 @@ namespace Assignment4
             SpritesForDrawList.Add(PaddleTop);
             SpritesForDrawList.Add(Ball);
 
-            Walls = new List<Wall>()
-            {
-                // try with 100 for default wall size !
-                new Wall(null, -GameConstants.WallDefaultSize, 0, GameConstants.WallDefaultSize , screenBounds.Height),
-                new Wall(null, screenBounds.Right, 0, GameConstants.WallDefaultSize, screenBounds.Height)
-            };
-            Goals = new List<Wall>()
-            {
-                new Wall(PaddleBottom, 0, screenBounds.Height, screenBounds.Width, GameConstants.WallDefaultSize),
-                new Wall(PaddleTop, screenBounds.Top, -GameConstants.WallDefaultSize, screenBounds.Width, GameConstants.WallDefaultSize)
-            };
+            Walls = new GenericList<Wall>();
+            Walls.Add(new Wall(null, -GameConstants.WallDefaultSize, 0, GameConstants.WallDefaultSize, screenBounds.Height));
+            Walls.Add(new Wall(null, screenBounds.Right, 0, GameConstants.WallDefaultSize, screenBounds.Height));
+
+            Goals = new GenericList<Wall>();
+            Goals.Add(new Wall(PaddleBottom, 0, screenBounds.Height, screenBounds.Width, GameConstants.WallDefaultSize));
+            Goals.Add(new Wall(PaddleTop, screenBounds.Top, -GameConstants.WallDefaultSize, screenBounds.Width, GameConstants.WallDefaultSize));
+            
 
             base.Initialize();
 
@@ -207,7 +203,8 @@ namespace Assignment4
 
             var ballPositionChange = Ball.Direction * new Vector2((float)(gameTime.ElapsedGameTime.TotalMilliseconds * Ball.Speed));
             Ball.X += ballPositionChange.X;
-            Ball.Y += ballPositionChange.Y;
+            Ball.Y += ballPositionChange.Y;
+
             foreach (Wall wall in Walls)
             {
                 if (CollisionDetector.Overlaps(Ball, wall))
